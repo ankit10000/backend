@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const notepadRoutes = require("./routes/notepadRoutes");
+const replyRoutes = require("./routes/replyRoutes");
 const connectDB = require("./config/db");
 const cors = require("cors");
 // Connect to MongoDB
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api", notepadRoutes);
+app.use("/api", replyRoutes);
 
 // Start server
 app.listen(PORT, () => {

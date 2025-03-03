@@ -12,7 +12,8 @@ const saveToNotepad = (req, res) => {
         from_screen,
         like_dislike,
         os_version,
-        rate_star } = req.body;
+        rate_star, report,
+        fraq } = req.body;
 
     if (!app_version ||
         !app_name ||
@@ -24,7 +25,7 @@ const saveToNotepad = (req, res) => {
         !from_screen ||
         !like_dislike ||
         !os_version ||
-        !rate_star) {
+        !rate_star || !report || !fraq) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -40,6 +41,8 @@ const saveToNotepad = (req, res) => {
         like_dislike,
         os_version,
         rate_star,
+        report,
+        fraq,
         timestamp: new Date().toISOString(),
     };
 
