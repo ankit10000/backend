@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/user_feedback";
 
-const connectDB = async () => {
+const connectDB1 = async () => {
     try {
         await mongoose.connect(MONGO_URI, {
             useNewUrlParser: true,
@@ -16,4 +16,4 @@ const connectDB = async () => {
     }
 };
 
-module.exports = connectDB;
+module.exports = connectDB1;
