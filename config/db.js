@@ -1,19 +1,19 @@
-const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/feedback_user";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
+const DB_NAME = "user_feedback";
+
+let db;
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-        console.log("MongoDB Connected Successfully");
-    } catch (error) {
-        console.error("MongoDB Connection Error:", error);
-        process.exit(1);
+    if (!db) {
+        const client = new MongoClient(MONGO_URI);
+        await client.connect();
+        db = client.db(DB_NAME);
+        console.log("MongoDB Connected");
     }
+    return db;
 };
 
 module.exports = connectDB;
