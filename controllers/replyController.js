@@ -2,16 +2,14 @@ const fs = require("fs");
 const nodemailer = require("nodemailer");
 const connectDB = require("../config/db");
 
-// Email Configuration
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: process.env.EMAIL, // Your email
-        pass: process.env.EMAIL_PASSWORD // Your email password
+        user: process.env.EMAIL, 
+        pass: process.env.EMAIL_PASSWORD 
     }
 });
 
-// Function to send a reply via email and save to Notepad
 const sendReply = async (req, res) => {
     const { email, subject, message } = req.body;
 
@@ -20,7 +18,6 @@ const sendReply = async (req, res) => {
     }
 
     try {
-        // Sending Email
         await transporter.sendMail({
             from: process.env.EMAIL,
             to: email,
@@ -35,7 +32,6 @@ const sendReply = async (req, res) => {
             timestamp: new Date().toISOString(),
         };
 
-        // Append reply to Notepad file
         fs.appendFile("replies.txt", JSON.stringify(replyData) + "\n", (err) => {
             if (err) {
                 console.error("Error writing to file", err);
@@ -49,7 +45,6 @@ const sendReply = async (req, res) => {
     }
 };
 
-// Function to parse Notepad replies and store in MongoDB
 const parseRepliesToMongoDB = async () => {
     try {
         if (!fs.existsSync("replies.txt")) return;
@@ -69,17 +64,14 @@ const parseRepliesToMongoDB = async () => {
 
         console.log("Replies inserted into MongoDB successfully!");
 
-        // Clear the file after inserting into DB
         fs.writeFileSync("replies.txt", "");
     } catch (err) {
         console.error("Error processing file:", err);
     }
 };
 
-// Schedule the function to run every 5 minutes
 setInterval(parseRepliesToMongoDB, 1000);
 
-// Function to fetch replies from MongoDB
 const getAllReplies = async (req, res) => {
     try {
         const db = await connectDB();
