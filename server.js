@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const connectDB = require("./config/db");
+const {connectDB , connectDB1} = require("./config/db");
 
 const notepadRoutes = require("./routes/notepadRoutes");
 const replyRoutes = require("./routes/replyRoutes");
@@ -10,6 +10,7 @@ const assignAppRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 connectDB();
+connectDB1();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
