@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerAdmin, registerEmployee, login, getProfile } = require("../controllers/authController");
+const { registerAdmin, registerEmployee, login, getProfile, getAllEmployeesAndAdmins, getAllEmployees  } = require("../controllers/authController");
 const { body } = require("express-validator");
 const authMiddleware = require("../middleware/authMiddleware");
 
@@ -35,5 +35,9 @@ router.post(
 );
 
 router.get("/profile", authMiddleware, getProfile);
+
+router.get("/users", authMiddleware, getAllEmployeesAndAdmins);
+router.get("/get-all-employees", authMiddleware, getAllEmployees);
+
 
 module.exports = router;

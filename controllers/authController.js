@@ -60,5 +60,33 @@ const getProfile = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+// Get All Employees & Admins (Only for Admins)
+const getAllEmployeesAndAdmins = async (req, res) => {
+    try {
+        if (req.user.role !== "admin") {
+            return res.status(403).json({ message: "Access denied. Only admins can view this data." });
+        }
 
-module.exports = { registerAdmin, registerEmployee, login, getProfile };
+        const users = await User.find({ role: { $in: ["employee", "admin"] } }).select("-password");
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getAllEmployees = async (req, res) => {
+    try {
+        if (req.user.role !== "admin") {
+            return res.status(403).json({ message: "Access denied. Only admins can view this data." });
+        }
+
+        const employees = await User.find({ role: "employee" }).select("email assignedApps");
+        res.json(employees);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+
+module.exports = { registerAdmin, registerEmployee, login, getProfile, getAllEmployeesAndAdmins, getAllEmployees };
+
